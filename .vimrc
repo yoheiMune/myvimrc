@@ -225,6 +225,9 @@ if has('vim_starting')
   NeoBundle 'kien/ctrlp.vim'
   NeoBundle 'digitaltoad/vim-jade'
   NeoBundle 'scrooloose/syntastic'
+  NeoBundle 'Shougo/neocomplcache'
+  NeoBundle 'teramako/jscomplete-vim'
+  NeoBundle 'myhere/vim-nodejs-complete'
 
 " end of neobundle
 "--------------------------------------------------------------------------
@@ -233,6 +236,75 @@ if has('vim_starting')
 let g:syntastic_mode_map = { 'mode': 'passive',
                            \ 'active_filetypes': ['ruby', 'javascript'],
                            \ 'passive_filetypes': [] }
+
+
+
+" JavaScript input support
+autocmd FileType javascript setlocal omnifunc=nodejscomplete#CompleteJS
+" complcache
+NeoBundle 'Shougo/neocomplcache'
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplcache.
+let g:neocomplcache_enable_at_startup = 1
+" Use smartcase.
+let g:neocomplcache_enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplcache_min_syntax_length = 3
+let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+
+" Define dictionary.
+let g:neocomplcache_dictionary_filetype_lists = {
+    \ 'default' : ''
+    \ }
+
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplcache#undo_completion()
+inoremap <expr><C-l>     neocomplcache#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+      return neocomplcache#smart_close_popup() . "\<CR>"
+  endfunction
+  " <TAB>: completion.
+  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+  " <C-h>, <BS>: close popup and delete backword char.
+  inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+  inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+  inoremap <expr><C-y>  neocomplcache#close_popup()
+  inoremap <expr><C-e>  neocomplcache#cancel_popup()
+
+  
+if !exists('g:neocomplcache_omni_functions')
+      let g:neocomplcache_omni_functions = {}
+endif
+let g:neocomplcache_omni_functions.javascript = 'nodejscomplete#CompleteJS'
+
+let g:node_usejscomplete = 1
+
+" autocmd FileType javascript,coffee setlocal omnifunc=javascriptcomplete#CompleteJS
+
+let g:neocomplcache_source_rank = {
+  \ 'jscomplete' : 500,
+  \ }
+
+" dom も含める
+let g:jscomplete_use = ['dom']
+
+
+" はりつけ時に勝手にコメントアウトが付与されるのを防止
+autocmd FileType * set formatoptions-=ro
+
+
+" Popup補完メニューの色設定
+highlight Pmenu ctermbg=8 guibg=#606060
+highlight PmenuSel ctermbg=12 guibg=SlateBlue
+highlight PmenuSbar ctermbg=0 guibg=#404040
+"highlight PmenuThumb ctermbg=0 guibg=Red
+
+
 
 
 
