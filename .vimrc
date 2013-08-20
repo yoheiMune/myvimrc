@@ -33,7 +33,7 @@ set shiftwidth=4
  " Enable syntax highlighting
  " 色づけをオン
  syntax on
- 
+ au BufRead,BufNewFile *.jade setfiletype jade
  
  "------------------------------------------------------------
  " Must have options {{{1
@@ -156,9 +156,9 @@ set shiftwidth=4
  " Do not change 'tabstop' from its default value of 8 with this setup.
  " タブ文字の代わりにスペース2個を使う場合の設定。
  " この場合、'tabstop'はデフォルトの8から変えない。
- set shiftwidth=2
- set softtabstop=2
- set expandtab
+ " set shiftwidth=2
+ " set softtabstop=2
+ " set expandtab
  
  " Indentation settings for using hard tabs for indent. Display tabs as
  " two characters wide.
@@ -222,12 +222,17 @@ if has('vim_starting')
   "GitHubリポジトリにあるプラグインを利用場合
   NeoBundle 'Shougo/neobundle.vim'
   NeoBundle 'surround.vim'
-
+  NeoBundle 'kien/ctrlp.vim'
+  NeoBundle 'digitaltoad/vim-jade'
+  NeoBundle 'scrooloose/syntastic'
 
 " end of neobundle
 "--------------------------------------------------------------------------
 
-
+" Syntax Check
+let g:syntastic_mode_map = { 'mode': 'passive',
+                           \ 'active_filetypes': ['ruby', 'javascript'],
+                           \ 'passive_filetypes': [] }
 
 
 
